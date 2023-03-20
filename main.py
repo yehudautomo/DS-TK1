@@ -45,9 +45,38 @@ def soalB():
     plt.ylabel("Tarif Internet")
     plt.show()
 
+def soalC():
+    number_of_colors = 8
+    color = ["#" + ''.join([random.choice('0123456789ABCDEF') for j in range(6)])
+             for i in range(number_of_colors)]
+    data = []
+    with open("./data_tk1.csv", 'r') as file:
+        csvreader = list(csv.reader(file))
+        csvreader.pop(0)
+        csvreader.sort(key=itemgetter(4))
+        print(csvreader)
+        key_func = lambda x: x[4]
+        for key, group in itertools.groupby(csvreader, key_func):
+            # print(key + " :", list(group))
+            data.append([key, list(group)])
+    for idx, d in enumerate(data):
+        d[1].sort(key=itemgetter(5))
+        keyFuncD = lambda x: x[5]
+        rentFee = []
+        roomType = []
+        for key, group in itertools.groupby(d[1], keyFuncD):
+            rentFee.append(int(key))
+            roomType.append(d[0])
+        print(rentFee, roomType)
+        plt.scatter(roomType, rentFee, color=color[idx])
+    plt.xlabel("Tipe Kamar")
+    plt.ylabel("Biaya sewa")
+    plt.show()
+
 def startTK():
     soalA()
     soalB()
+    soalC()
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
